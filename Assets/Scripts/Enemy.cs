@@ -7,11 +7,11 @@ public class Enemy : MonoBehaviour
 	Rigidbody2D rb;
 
 	[SerializeField] // serialized fields for the benefit of using with multiple prefabs!
-	float /*xSpeed,*/ ySpeed, fireRate; // enemy's movement and firing frequency
+	float ySpeed, fireRate; // enemy's movement and firing frequency
 	[SerializeField]
 	int scoreVal; // scoring value of the enemy type
 	[SerializeField]
-	float enemyType; // designates enemy type, 0 for faller, 1 for shooter
+	float enemyType; // designates enemy type, 0 for faller, 1 for shooter, 2 for boss
 	[SerializeField]
 	float health; // designates health for shooter
 	[SerializeField]
@@ -32,7 +32,6 @@ public class Enemy : MonoBehaviour
 		Instance = this;
 		if (enemyType == 1)
 			InvokeRepeating(nameof(Shoot), fireRate, fireRate);
-		Physics2D.IgnoreLayerCollision(7, 8);
 	}
 
 	// Update is called once per frame
@@ -63,6 +62,10 @@ public class Enemy : MonoBehaviour
 			{
 				Damage();
 			}
+			else if (collision.gameObject.CompareTag("EnemyBound"))
+			{
+				Die(); // suicide
+			}
 		}
 	}
 
@@ -73,6 +76,8 @@ public class Enemy : MonoBehaviour
 		if (health <= 0)
 		{
 			LevelManager.Instance.ScoreUp(scoreVal);
+			if (enemyType==1)
+				EnemySpawner.Instance.shootersDefeated++;
 			Die();
 		}
 	}

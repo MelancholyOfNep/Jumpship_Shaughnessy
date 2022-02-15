@@ -4,37 +4,35 @@ using UnityEngine;
 
 public class Spaceship : MonoBehaviour
 {
+	public static Spaceship Instance;
+
 	Rigidbody2D rb;
 
 	[SerializeField]
-	GameObject gun, bullet, explosion; // object for gun, bullet, and death expl
+	GameObject gun, bullet; //explosion; // object for gun, bullet, and death expl
 	[SerializeField]
 	float moveSpeedX, moveSpeedY, fireRate; // speed at which player can move horizontally and vertically, and rate of fire
 	[SerializeField]
-	AudioSource deathExplSound; // death expl sfx
+	Collider2D coll;
 	[SerializeField]
-	SpriteRenderer rend; // sprite renderer for Player
+	GameObject explosion;
 	[SerializeField]
-	PolygonCollider2D col; // collider for Player
+	SpriteRenderer rend;
+	
 	
 	float cooldown = 0f;
 
 
-	public static Spaceship Instance;
-
-	//Botched damage system. Remove later.
-	/* [SerializeField]
-	int health = 3; // health, which may or may not be moved to a central game controller for UI purposes */
-
-
-	private void Awake()
+	private void Start()
 	{
-		rb = GetComponent<Rigidbody2D>(); // get Rigidbody2D on wake
+		rb = GetComponent<Rigidbody2D>(); // get Rigidbody2D on start
 		Instance = this;
+		coll = GetComponent<Collider2D>(); // get collider on start
+		StartCoroutine(HitboxCycle());
 	}
 
-	// Update is called once per frame
-	void Update()
+    // Update is called once per frame
+    void Update()
 	{
 		// receive yinput, turn that input into vertical movement using velocity modifier
 		float yinput = Input.GetAxisRaw("Vertical");
@@ -53,30 +51,31 @@ public class Spaceship : MonoBehaviour
 		}
 	}
 
-	// Botched damage system. Remove later
-	/* public void Damage()
-	{
-		health--; // when hit, take damage / lose health
-		if (health == 0)
-			Destroy(gameObject); // suicide @ 0 HP
-	} */
-
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.CompareTag("Enemy")
 			|| collision.gameObject.CompareTag("EnemyBullet")) // when contacting an enemy
 		{
-			deathExplSound.Play();
-			rend.enabled = false;
-			col.enabled = false;
-			// Instantiate(explosion, transform.position, Quaternion.identity);
+			Instantiate(explosion, transform.position, Quaternion.identity);
 			Destroy(gameObject); // die
 			LevelManager.Instance.Respawn(); // respawn
 		}
 	}
 
-	void Shoot()
+	public void Shoot()
 	{
 		Instantiate(bullet, gun.transform.position, Quaternion.identity);
 	}
+
+	IEnumerator HitboxCycle()
+    {
+		coll.enabled = false;
+		Color placeholder = rend.color;
+		rend.color = Color.yellow;
+		Debug.Log("Start");
+		yield return new WaitForSeconds(1);
+		coll.enabled = true;
+		rend.color = placeholder;
+		Debug.Log("End");
+    }
 }

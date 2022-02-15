@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - EnemyBound
   - EnemyBullet
+  - BossStopper
   layers:
   - Default
   - TransparentFX
@@ -18,10 +19,10 @@ TagManager:
   - PlayerBounds
   - Enemy
   - ShooterEnemy
-  - 
-  - 
-  - 
-  - 
+  - PlayerBullet
+  - EnemyBullet
+  - BossStopper
+  - Boss
   - 
   - 
   - 

@@ -16,8 +16,8 @@ public class EnemyBullet : MonoBehaviour
 		Instance = this;
 	}
 
-	// Update is called once per frame
-	void FixedUpdate()
+    // Update is called once per frame
+    void FixedUpdate()
 	{
 		rb.velocity = transform.up * shotSpeed;
 	}

@@ -14,42 +14,29 @@ public class LevelManager : MonoBehaviour
 	[SerializeField]
 	GameObject playerPF; // prefab for respawning player
 	[SerializeField]
-	TextMeshProUGUI scoreText, livesText, timerText; // text fields for score, lives, timer
-	[SerializeField]
-	float timeLimit; // time limit for the level
+	TextMeshProUGUI scoreText, livesText; // text fields for score, lives
 
 	public int score = 0; // counts the score for the UI
-	public int livesCount; // lives counter for the scene management and UI
-
-	bool timerRunning = false; // shouldthe timer be running? y/n
-
-	/* [SerializeField]
-	int enemyCount; // # of enemies */
+	public int livesCount = 3; // lives counter for the scene management and UI
+	public bool bossDead = false;
 
 	private void Awake()
 	{
 		Instance = this;
-		ScoreUp(0); // display the score by triggering the function without an increase
-		Respawn(); // display the life counter by triggering function with an extra life
 	}
 
 	private void Start()
 	{
-		timerRunning = true;
+		ScoreUp(0); // display the score by triggering the function without an increase
+		livesText.text = livesCount.ToString();
 	}
 
 	void Update()
 	{
-		Timer(); // runs the timer
-		DisplayTime(); // displays the timer
-
-		// maybe something like:
-		// if (timerRunning != true)
-			// SceneManager.LoadScene("VictoryScene");
-
+		if (bossDead == true)
+			SceneManager.LoadScene("VictoryScene");
 		if (livesCount == 0)
 			SceneManager.LoadScene("GameOverScene");
-
 		if (Input.GetButtonDown("Cancel"))
 			SceneManager.LoadScene("MainMenuScene");
 	}
@@ -66,25 +53,5 @@ public class LevelManager : MonoBehaviour
 		score += scoreValue;
 		scoreText.text = score.ToString();
 	}
-
-	void Timer()
-	{
-		if(timerRunning)
-		{
-			if (timeLimit > 0)
-				timeLimit -= Time.deltaTime;
-			else
-			{
-				Debug.Log("Time Out!");
-				timeLimit = 0;
-				timerRunning = false;
-			}
-		}
-	}
-
-	void DisplayTime()
-    {
-		float timeInt = Mathf.FloorToInt(timeLimit);
-		timerText.text = timeInt.ToString();
-    }
 }
+
