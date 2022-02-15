@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
 	[SerializeField]
 	float health; // designates health for shooter
 	[SerializeField]
-	GameObject bullet, gun; // designates the enemy bullet, as well as firing location
+	GameObject bullet, gun, deathExpl; // designates the enemy bullet, as well as firing location and explosion effect
 
 	readonly float dmgAmount = 10; // designates damage of player bullet
 
@@ -46,15 +46,21 @@ public class Enemy : MonoBehaviour
 		{
 			if (collision.gameObject.CompareTag("Bullet"))  // upon hitting the bullet
 			{
+				Instantiate(deathExpl, transform.position, Quaternion.identity);
 				LevelManager.Instance.ScoreUp(scoreVal);
 				Die(); // suicide
 			}
 
-			if (collision.gameObject.CompareTag("EnemyBound")
-				|| collision.gameObject.CompareTag("Player"))
+			else if (collision.gameObject.CompareTag("Player"))
 			{
+				Instantiate(deathExpl, transform.position, Quaternion.identity);
 				Die(); // suicide
 			}
+
+			else if (collision.gameObject.CompareTag("EnemyBound"))
+            {
+				Die(); // suicide
+            }
 		}
 		else if (enemyType == 1)
 		{

@@ -177,3 +177,4 @@ MonoBehaviour:
   health: 0
   bullet: {fileID: 0}
   gun: {fileID: 0}
+  deathExpl: {fileID: 1744369857436598695, guid: 29f6139c6731a544fab824d30758bef7, type: 3}

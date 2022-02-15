@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
 
 	public void Respawn()
 	{
-		Instantiate(playerPF, respawnPt.position, Quaternion.identity); // instantiate player @ spawn pt
+		// Instantiate(playerPF, respawnPt.position, Quaternion.identity); // instantiate player @ spawn pt
 		livesCount--; // tick down lives count
 		livesText.text = livesCount.ToString(); // lives text updated to match lives count
 	}

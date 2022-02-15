@@ -142,6 +142,7 @@ MonoBehaviour:
   health: 50
   bullet: {fileID: 1984936199294832685, guid: f0ddf1718b5bcc1488e637ab0e5d2897, type: 3}
   gun: {fileID: 3890811867524416110}
+  deathExpl: {fileID: 1744369857436598695, guid: 29f6139c6731a544fab824d30758bef7, type: 3}
 --- !u!1 &3890811867524416110
 GameObject:
   m_ObjectHideFlags: 0

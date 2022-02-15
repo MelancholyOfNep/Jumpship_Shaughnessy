@@ -15,11 +15,11 @@ public class Spaceship : MonoBehaviour
 	[SerializeField]
 	Collider2D coll;
 	[SerializeField]
-	GameObject explosion;
-	[SerializeField]
 	SpriteRenderer rend;
-	
-	
+
+	Color spriteColor; // stores original color of sprite
+
+
 	float cooldown = 0f;
 
 
@@ -28,11 +28,12 @@ public class Spaceship : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>(); // get Rigidbody2D on start
 		Instance = this;
 		coll = GetComponent<Collider2D>(); // get collider on start
+		spriteColor = rend.color;
 		StartCoroutine(HitboxCycle());
 	}
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
 	{
 		// receive yinput, turn that input into vertical movement using velocity modifier
 		float yinput = Input.GetAxisRaw("Vertical");
@@ -56,8 +57,8 @@ public class Spaceship : MonoBehaviour
 		if (collision.gameObject.CompareTag("Enemy")
 			|| collision.gameObject.CompareTag("EnemyBullet")) // when contacting an enemy
 		{
-			Instantiate(explosion, transform.position, Quaternion.identity);
-			Destroy(gameObject); // die
+			// Instantiate(explosion, transform.position, Quaternion.identity);
+			StartCoroutine(HitboxCycle());
 			LevelManager.Instance.Respawn(); // respawn
 		}
 	}
@@ -68,14 +69,32 @@ public class Spaceship : MonoBehaviour
 	}
 
 	IEnumerator HitboxCycle()
-    {
+	{
 		coll.enabled = false;
-		Color placeholder = rend.color;
-		rend.color = Color.yellow;
+		InvokeRepeating(nameof(BlinkTrigger), 0f, .2f); // repeat the blink
 		Debug.Log("Start");
 		yield return new WaitForSeconds(1);
-		coll.enabled = true;
-		rend.color = placeholder;
+		CancelInvoke(nameof(BlinkTrigger)); // stop the blink
+		StartCoroutine(ReturnToPositiveState()); // wait, re-enable collider and set color to normal
 		Debug.Log("End");
+	}
+
+	void BlinkTrigger()
+    {
+		StartCoroutine(Blink());
     }
+
+	IEnumerator Blink()
+	{
+		rend.color = Color.yellow;
+		yield return new WaitForSeconds(.1f);
+		rend.color = Color.clear;
+	}
+
+	IEnumerator ReturnToPositiveState()
+    {
+		yield return new WaitForSeconds(.1f);
+		coll.enabled = true;
+		rend.color = spriteColor;
+	}
 }
