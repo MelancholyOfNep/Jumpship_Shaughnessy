@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -281140848885206090}
   m_Layer: 7
   m_Name: Faller Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6240168814933176629}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.35364467, y: 2.260642, z: 0}
+  m_LocalPosition: {x: 0.35364467, y: 2.260642, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -171,7 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xSpeed: 0
-  ySpeed: -7.52
+  ySpeed: -2.04
   fireRate: 0
+  scoreVal: 100
+  enemyType: 0
   health: 0
-  shoots: 0
