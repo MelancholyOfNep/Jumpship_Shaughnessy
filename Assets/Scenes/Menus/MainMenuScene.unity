@@ -1314,7 +1314,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 316.8}
+  m_SizeDelta: {x: 516.3, y: 470.4}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2077256056
 MonoBehaviour:
@@ -1336,22 +1336,26 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Controls:
+  m_text: 'CHECK YOUR VOLUME! This game has sound effects and music, so turn your
+    volume down and bring it up once you start!
 
-    Move - WASD / Arrow Keys
+
+    Controls:
+
+    Move - WASD
+    / Arrow Keys
 
     Shoot - Ctrl
 
-    Quit -
-    Escape
+    Quit - Escape
 
 
     Goals:
 
-    Defeat 5 orange enemies to bring out the boss.
+    Defeat 5
+    orange enemies to bring out the boss.
 
-    Defeat
-    the boss to win!'
+    Defeat the boss to win!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a1132a2c41acefb48950dba113470709, type: 2}
   m_sharedMaterial: {fileID: -8126256501375182422, guid: a1132a2c41acefb48950dba113470709, type: 2}
@@ -1378,8 +1382,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

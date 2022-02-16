@@ -81,6 +81,7 @@ public class Boss : MonoBehaviour
 	void Die()
 	{
 		CamShake.Instance.countdown = 1f;
+		CancelInvoke(nameof(Shoot));
 		Instantiate(bossDeath, transform.position, Quaternion.identity);
 		LevelManager.Instance.bossDead = true;
 		Spaceship.Instance.coll.enabled = false;

@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 578145368905957003}
   - component: {fileID: 578145368905957012}
   - component: {fileID: 578145368905957013}
-  - component: {fileID: -8755068005156073867}
-  - component: {fileID: 2820793708648765027}
   m_Layer: 0
   m_Name: BossParticleSystem
   m_TagString: Untagged
@@ -4877,7 +4875,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 3ebe7580c5040684abc2b74675dc6969, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.63
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4961,38 +4959,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!168 &-8755068005156073867
-AudioEchoFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578145368905957014}
-  m_Enabled: 0
-  m_Delay: 500
-  m_DecayRatio: 0.5
-  m_WetMix: 1
-  m_DryMix: 0.36
---- !u!164 &2820793708648765027
-AudioReverbFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578145368905957014}
-  m_Enabled: 0
-  m_DryLevel: 0
-  m_Room: -1000
-  m_RoomHF: -100
-  m_DecayTime: 1.49
-  m_DecayHFRatio: 0.83
-  m_ReflectionsLevel: -2602
-  m_ReverbLevel: 200
-  m_ReverbDelay: 0.011
-  m_Diffusion: 100
-  m_Density: 100
-  m_HFReference: 5000
-  m_RoomLF: 0
-  m_LFReference: 250
-  m_ReflectionsDelay: 0
-  m_ReverbPreset: 1
