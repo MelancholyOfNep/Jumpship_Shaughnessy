@@ -13,7 +13,6 @@ public class Spaceship : MonoBehaviour
 	GameObject gun, bullet; //explosion; // object for gun, bullet, and death expl
 	[SerializeField]
 	float moveSpeedX, moveSpeedY, fireRate; // speed at which player can move horizontally and vertically, and rate of fire
-	public Collider2D coll; // the collider of the player
 	[SerializeField]
 	SpriteRenderer rend; // the sprite of the ship
 	[SerializeField]
@@ -29,8 +28,6 @@ public class Spaceship : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>(); // get Rigidbody2D on start
 		Instance = this;
-		coll = GetComponent<Collider2D>(); // get collider on start
-		coll.enabled = true; // ensures that the collider is on, just in case
 		spriteColor = rend.color; // stores the standard color of the ship
 		StartCoroutine(HitboxCycle()); // invincibility frames! see later code.
 	}
@@ -73,7 +70,7 @@ public class Spaceship : MonoBehaviour
 
 	IEnumerator HitboxCycle()
 	{
-		coll.enabled = false; // turn off the collider
+		gameObject.layer = 14; // switch layer to Invincibility
 		InvokeRepeating(nameof(BlinkTrigger), 0f, .2f); // repeatedly calls the function to start the Blink coroutine
 		yield return new WaitForSeconds(1); // keep the collider off and the blinks recurring for a second
 		CancelInvoke(nameof(BlinkTrigger)); // stop the blink
@@ -99,7 +96,7 @@ public class Spaceship : MonoBehaviour
 	{
 		// critical! waits for the blink to stop! if it doesn't wait, the sprite may turn clear again!
 		yield return new WaitForSeconds(.1f);
-		coll.enabled = true; // re-enable collider
+		gameObject.layer = 0; // return layer to default!
 		rend.color = spriteColor; // return the sprite to its normal color
 	}
 }

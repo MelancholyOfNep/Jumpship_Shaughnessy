@@ -84,7 +84,7 @@ public class Boss : MonoBehaviour
 		CancelInvoke(nameof(Shoot));
 		Instantiate(bossDeath, transform.position, Quaternion.identity);
 		LevelManager.Instance.bossDead = true;
-		Spaceship.Instance.coll.enabled = false;
+		Spaceship.Instance.gameObject.layer = 14;
 		sprite.color = Color.white;
 	}
 
