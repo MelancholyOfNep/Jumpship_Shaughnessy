@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Spaceship : MonoBehaviour
 {
@@ -12,10 +13,11 @@ public class Spaceship : MonoBehaviour
 	GameObject gun, bullet; //explosion; // object for gun, bullet, and death expl
 	[SerializeField]
 	float moveSpeedX, moveSpeedY, fireRate; // speed at which player can move horizontally and vertically, and rate of fire
+	public Collider2D coll; // the collider of the player
 	[SerializeField]
-	Collider2D coll;
+	SpriteRenderer rend; // the sprite of the ship
 	[SerializeField]
-	SpriteRenderer rend;
+	AudioSource hitExplSfx; // sound effect of being hit
 
 	Color spriteColor; // stores original color of sprite
 
@@ -28,8 +30,9 @@ public class Spaceship : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>(); // get Rigidbody2D on start
 		Instance = this;
 		coll = GetComponent<Collider2D>(); // get collider on start
-		spriteColor = rend.color;
-		StartCoroutine(HitboxCycle());
+		coll.enabled = true; // ensures that the collider is on, just in case
+		spriteColor = rend.color; // stores the standard color of the ship
+		StartCoroutine(HitboxCycle()); // invincibility frames! see later code.
 	}
 
 	// Update is called once per frame
@@ -57,8 +60,8 @@ public class Spaceship : MonoBehaviour
 		if (collision.gameObject.CompareTag("Enemy")
 			|| collision.gameObject.CompareTag("EnemyBullet")) // when contacting an enemy
 		{
-			// Instantiate(explosion, transform.position, Quaternion.identity);
-			StartCoroutine(HitboxCycle());
+			hitExplSfx.Play();
+			StartCoroutine(HitboxCycle()); // triggers invincibility frames for appx. 1.2s
 			LevelManager.Instance.Respawn(); // respawn
 		}
 	}
@@ -70,31 +73,33 @@ public class Spaceship : MonoBehaviour
 
 	IEnumerator HitboxCycle()
 	{
-		coll.enabled = false;
-		InvokeRepeating(nameof(BlinkTrigger), 0f, .2f); // repeat the blink
-		Debug.Log("Start");
-		yield return new WaitForSeconds(1);
+		coll.enabled = false; // turn off the collider
+		InvokeRepeating(nameof(BlinkTrigger), 0f, .2f); // repeatedly calls the function to start the Blink coroutine
+		yield return new WaitForSeconds(1); // keep the collider off and the blinks recurring for a second
 		CancelInvoke(nameof(BlinkTrigger)); // stop the blink
 		StartCoroutine(ReturnToPositiveState()); // wait, re-enable collider and set color to normal
-		Debug.Log("End");
 	}
 
 	void BlinkTrigger()
-    {
+	{
 		StartCoroutine(Blink());
-    }
+		/*	function simply calls the coroutine due to not
+			being able to Invoke IEnumerators repeatedly	*/
+	}
 
 	IEnumerator Blink()
 	{
-		rend.color = Color.yellow;
-		yield return new WaitForSeconds(.1f);
-		rend.color = Color.clear;
+		rend.color = Color.yellow; // make the sprite yellow
+		yield return new WaitForSeconds(.1f); // wait .1 seconds
+		rend.color = Color.clear; // make the sprite clear
+		// this then repeats, giving off a blink effect!
 	}
 
 	IEnumerator ReturnToPositiveState()
-    {
+	{
+		// critical! waits for the blink to stop! if it doesn't wait, the sprite may turn clear again!
 		yield return new WaitForSeconds(.1f);
-		coll.enabled = true;
-		rend.color = spriteColor;
+		coll.enabled = true; // re-enable collider
+		rend.color = spriteColor; // return the sprite to its normal color
 	}
 }

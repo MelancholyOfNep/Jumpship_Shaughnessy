@@ -16,14 +16,20 @@ public class Enemy : MonoBehaviour
 	float health; // designates health for shooter
 	[SerializeField]
 	GameObject bullet, gun, deathExpl; // designates the enemy bullet, as well as firing location and explosion effect
+	[SerializeField]
+	SpriteRenderer sprite; // renderer for sprite for damageframes
+
 
 	readonly float dmgAmount = 10; // designates damage of player bullet
+	Color spriteColorHolder; // placeholder for default sprite color
 
 	public static Enemy Instance;
 
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>(); // get the damn rigidbody automatically
+		sprite = GetComponent<SpriteRenderer>(); // get the sprite renderer
+		spriteColorHolder = sprite.color; // get default sprite color
 	}
 
 	// Start is called before the first frame update
@@ -78,12 +84,14 @@ public class Enemy : MonoBehaviour
 	void Damage()
 	{
 		health -= dmgAmount;
+		StartCoroutine(nameof(DamageFlash));
 
 		if (health <= 0)
 		{
 			LevelManager.Instance.ScoreUp(scoreVal);
 			if (enemyType==1)
 				EnemySpawner.Instance.shootersDefeated++;
+			Instantiate(deathExpl, transform.position, Quaternion.identity);
 			Die();
 		}
 	}
@@ -98,4 +106,11 @@ public class Enemy : MonoBehaviour
 	{
 		Instantiate(bullet, gun.transform.position, Quaternion.identity);
 	}
+
+	IEnumerator DamageFlash()
+    {
+		sprite.color = Color.white;
+		yield return new WaitForSeconds(.1f);
+		sprite.color = spriteColorHolder;
+    }
 }

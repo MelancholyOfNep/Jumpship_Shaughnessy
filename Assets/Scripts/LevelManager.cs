@@ -34,7 +34,8 @@ public class LevelManager : MonoBehaviour
 	void Update()
 	{
 		if (bossDead == true)
-			SceneManager.LoadScene("VictoryScene");
+			// delay the transition so we can watch the fireworks!
+			StartCoroutine(VictoryTransition());
 		if (livesCount == 0)
 			SceneManager.LoadScene("GameOverScene");
 		if (Input.GetButtonDown("Cancel"))
@@ -52,6 +53,12 @@ public class LevelManager : MonoBehaviour
 	{
 		score += scoreValue;
 		scoreText.text = score.ToString();
+	}
+
+	IEnumerator VictoryTransition()
+    {
+		yield return new WaitForSeconds(3);
+		SceneManager.LoadScene("VictoryScene");
 	}
 }
 

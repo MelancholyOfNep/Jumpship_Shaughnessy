@@ -16,6 +16,13 @@ public class Boss : MonoBehaviour
 	float health; // designates health for boss
 	[SerializeField]
 	GameObject bullet, gun1, gun2, gun3, gun4, gun5; // designates the enemy bullet, as well as firing location
+	[SerializeField]
+	AudioSource bossSlam; // sound that plays when the boss stops moving
+	[SerializeField]
+	GameObject bossDeath;
+
+	SpriteRenderer sprite; // boss' sprite
+	Color bossColor; // boss' sprite's color
 
 	readonly float dmgAmount = 10; // designates damage of player bullet
 
@@ -26,6 +33,8 @@ public class Boss : MonoBehaviour
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>(); // get the damn rigidbody automatically
+		sprite = GetComponent<SpriteRenderer>();
+		bossColor = sprite.color;
 	}
 
 	// Start is called before the first frame update
@@ -49,6 +58,7 @@ public class Boss : MonoBehaviour
 		}
 		else if (collision.gameObject.CompareTag("BossStopper"))
 		{
+			bossSlam.Play();
 			BossStopped = true;
 			rb.velocity = transform.up * 0;
 			rb.position = new Vector3(0, 5, 0);
@@ -59,6 +69,7 @@ public class Boss : MonoBehaviour
 	void Damage()
 	{
 		health -= dmgAmount;
+		StartCoroutine(DamageFlash());
 
 		if (health <= 0)
 		{
@@ -69,10 +80,11 @@ public class Boss : MonoBehaviour
 
 	void Die()
 	{
-		// explosion effect
-		// screen shake?
-		// sound!
-		Destroy(gameObject); // suicide
+		CamShake.Instance.countdown = 1f;
+		Instantiate(bossDeath, transform.position, Quaternion.identity);
+		LevelManager.Instance.bossDead = true;
+		Spaceship.Instance.coll.enabled = false;
+		sprite.color = Color.white;
 	}
 
 	void Shoot()
@@ -82,5 +94,11 @@ public class Boss : MonoBehaviour
 		Instantiate(bullet, gun3.transform.position, Quaternion.identity);
 		Instantiate(bullet, gun4.transform.position, Quaternion.identity);
 		Instantiate(bullet, gun5.transform.position, Quaternion.identity);
+	}
+	IEnumerator DamageFlash()
+	{
+		sprite.color = Color.white;
+		yield return new WaitForSeconds(.1f);
+		sprite.color = bossColor;
 	}
 }
